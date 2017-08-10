@@ -17,14 +17,19 @@ import butterknife.ButterKnife
 import butterknife.OnClick
 import com.pingpongpacket.truckview.App
 import com.pingpongpacket.truckview.R
+import com.pingpongpacket.truckview.models.UserRegisterFirebase
 import com.pingpongpacket.truckview.tools.InputCheck
 import com.pingpongpacket.truckview.tools.Preferences
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
 import javax.inject.Inject
 
 abstract class AuthFragment: Fragment() {
     protected var disposable: CompositeDisposable = CompositeDisposable()
+    val USER_REGISTER = "User registered"
+
     interface Callback{
         fun remove(fragment: AuthFragment)
     }
@@ -33,6 +38,8 @@ abstract class AuthFragment: Fragment() {
     lateinit var inputCheck: InputCheck
     @Inject
     lateinit var preferences: Preferences
+    @Inject
+    lateinit var userRegisterFirebase: UserRegisterFirebase
 
     var callback: Callback? = null
 
@@ -79,6 +86,18 @@ abstract class AuthFragment: Fragment() {
 
     override fun onStart() {
         super.onStart()
+        val message = this.userRegisterFirebase.observableMessage.map { s -> s }
+        disposable.add(message.observeOn(Schedulers.newThread())
+                .map { s ->
+                    if (s == USER_REGISTER){
+                        preferences.username =
+                                userRegisterFirebase
+                                        .currentUser!!.displayName.toString()
+                    }
+                    s
+                }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { s -> context.toast(s) })
     }
 
     fun mergeColoredText(leftPart: String,

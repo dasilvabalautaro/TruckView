@@ -51,11 +51,11 @@ class SignUpFragment: AuthFragment() {
                 .map { validate ->
                     run{
                         if (validate){
-                            /*return@map this.userRegisterFirebase
+                            return@map this.userRegisterFirebase
                                     .createAccount(etEmailSignUp!!.text.toString(),
                                             etPasswordSignUp!!.text.toString(),
-                                            etUserName!!.text.toString())*/
-                            return@map ""
+                                            etUserName!!.text.toString())
+
                         }else{
                             val alert: String = resources
                                     .getString(R.string.error_input)

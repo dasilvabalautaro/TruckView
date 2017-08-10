@@ -55,10 +55,10 @@ class LogInFragment: AuthFragment() {
                 .map { validate ->
                     run{
                         if (validate){
-                            /*return@map this.userRegisterFirebase
+                            return@map this.userRegisterFirebase
                                     .signIn(etEmail!!.text.toString(),
-                                    etPassword!!.text.toString())*/
-                            return@map ""
+                                    etPassword!!.text.toString())
+
                         }else{
                             val alert: String = resources
                                     .getString(R.string.error_input)
