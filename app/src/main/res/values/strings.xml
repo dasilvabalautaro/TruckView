@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">TruckView</string>
+    <string name="sign_up_label">Sign Up</string>
+    <string name="log_in_label">Log In</string>
+
+    <string name="sign_up_or_label"> Sign Up </string>
+    <string name="log_in_or_label"> Log In </string>
+
+    <string name="password_hint">Password</string>
+    <string name="email_hint">Email</string>
+    <string name="user_name_hint">User Name</string>
+
+    <string name="or"> Or </string>
+    <string name="lbl_logo_description">Logo</string>
+    <string name="lbl_forgot_password">Forgot Password?</string>
+    <string name="error_input">Incorrect data. Please verify.</string>
+</resources>
