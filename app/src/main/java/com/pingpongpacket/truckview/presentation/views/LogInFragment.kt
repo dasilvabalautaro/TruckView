@@ -12,6 +12,11 @@ import android.widget.Button
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.pingpongpacket.truckview.R
+import io.reactivex.Observable
+import io.reactivex.ObservableEmitter
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.functions.Cancellable
+import io.reactivex.schedulers.Schedulers
 
 class LogInFragment: AuthFragment() {
     val TAG = LogInFragment::class.java.name!!
@@ -45,6 +50,24 @@ class LogInFragment: AuthFragment() {
     }
     override fun onStart() {
         super.onStart()
+        disposable.add( actionLoginButtonClickObservable()
+                .observeOn(Schedulers.newThread())
+                .map { validate ->
+                    run{
+                        if (validate){
+                            /*return@map this.userRegisterFirebase
+                                    .signIn(etEmail!!.text.toString(),
+                                    etPassword!!.text.toString())*/
+                            return@map ""
+                        }else{
+                            val alert: String = resources
+                                    .getString(R.string.error_input)
+                            return@map alert
+                        }
+                    }
+                }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { result -> context.toast(result)})
     }
 
     override fun fireAnimation() {
@@ -73,5 +96,15 @@ class LogInFragment: AuthFragment() {
         animatorSet.playTogether(buttonSet, buttonAnimator)
         animatorSet.start()
     }
-
+    private fun actionLoginButtonClickObservable(): Observable<Boolean> {
+        return Observable.create({
+            e: ObservableEmitter<Boolean>? ->
+            btSend!!.setOnClickListener({
+                e!!.onNext(inputCheck.validateInputLogin(etEmail!!.text.toString(),
+                        etPassword!!.text.toString())) })
+            e!!.setCancellable { Cancellable{
+                btSend!!.setOnClickListener(null)
+            } }
+        })
+    }
 }

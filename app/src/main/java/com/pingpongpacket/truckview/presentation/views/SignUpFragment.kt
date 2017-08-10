@@ -12,6 +12,11 @@ import android.widget.Button
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.pingpongpacket.truckview.R
+import io.reactivex.Observable
+import io.reactivex.ObservableEmitter
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.functions.Cancellable
+import io.reactivex.schedulers.Schedulers
 
 
 class SignUpFragment: AuthFragment() {
@@ -41,7 +46,25 @@ class SignUpFragment: AuthFragment() {
 
     override fun onStart() {
         super.onStart()
-
+        disposable.add( actionSingUpButtonClickObservable()
+                .observeOn(Schedulers.newThread())
+                .map { validate ->
+                    run{
+                        if (validate){
+                            /*return@map this.userRegisterFirebase
+                                    .createAccount(etEmailSignUp!!.text.toString(),
+                                            etPasswordSignUp!!.text.toString(),
+                                            etUserName!!.text.toString())*/
+                            return@map ""
+                        }else{
+                            val alert: String = resources
+                                    .getString(R.string.error_input)
+                            return@map alert
+                        }
+                    }
+                }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { result -> context.toast(result)})
     }
 
     override fun fireAnimation() {
@@ -69,5 +92,18 @@ class SignUpFragment: AuthFragment() {
         animatorSet.playTogether(buttonSet, buttonAnimator)
         animatorSet.start()
     }
-
+    private fun actionSingUpButtonClickObservable(): Observable<Boolean> {
+        return Observable.create({
+            e: ObservableEmitter<Boolean>? ->
+            btSend!!.setOnClickListener({
+                e!!.onNext(inputCheck.validateInputLogin(
+                        etEmailSignUp!!.text.toString(),
+                        etPasswordSignUp!!.text.toString(),
+                        etUserName!!.text.toString()))
+            })
+            e!!.setCancellable { Cancellable{
+                btSend!!.setOnClickListener(null)
+            } }
+        })
+    }
 }

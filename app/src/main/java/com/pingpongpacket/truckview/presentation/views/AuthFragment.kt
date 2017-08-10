@@ -15,15 +15,24 @@ import android.widget.Toast
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
+import com.pingpongpacket.truckview.App
 import com.pingpongpacket.truckview.R
+import com.pingpongpacket.truckview.tools.InputCheck
+import com.pingpongpacket.truckview.tools.Preferences
+import io.reactivex.disposables.CompositeDisposable
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
+import javax.inject.Inject
 
 abstract class AuthFragment: Fragment() {
-
+    protected var disposable: CompositeDisposable = CompositeDisposable()
     interface Callback{
         fun remove(fragment: AuthFragment)
     }
 
+    @Inject
+    lateinit var inputCheck: InputCheck
+    @Inject
+    lateinit var preferences: Preferences
 
     var callback: Callback? = null
 
@@ -92,7 +101,7 @@ abstract class AuthFragment: Fragment() {
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-
+        App.appComponent.inject(this)
     }
 
     fun Context.toast(message: CharSequence,
@@ -100,5 +109,8 @@ abstract class AuthFragment: Fragment() {
         Toast.makeText(this, message, duration).show()
 
     }
-
+    override fun onDestroy() {
+        super.onDestroy()
+        disposable.clear()
+    }
 }
