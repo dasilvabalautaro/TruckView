@@ -17,6 +17,7 @@ import butterknife.ButterKnife
 import butterknife.OnClick
 import com.pingpongpacket.truckview.App
 import com.pingpongpacket.truckview.R
+import com.pingpongpacket.truckview.dagger.AuthModule
 import com.pingpongpacket.truckview.models.UserRegisterFirebase
 import com.pingpongpacket.truckview.tools.InputCheck
 import com.pingpongpacket.truckview.tools.Preferences
@@ -29,6 +30,13 @@ import javax.inject.Inject
 abstract class AuthFragment: Fragment() {
     protected var disposable: CompositeDisposable = CompositeDisposable()
     val USER_REGISTER = "User registered"
+
+
+    val Fragment.app: App
+        get() = activity.application as App
+
+    val component by lazy { app.component.plus(AuthModule(context)) }
+
 
     interface Callback{
         fun remove(fragment: AuthFragment)
@@ -82,6 +90,7 @@ abstract class AuthFragment: Fragment() {
                     .start()
 
         }
+
     }
 
     override fun onStart() {
@@ -120,7 +129,7 @@ abstract class AuthFragment: Fragment() {
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        App.appComponent.inject(this)
+        component.inject(this)
     }
 
     fun Context.toast(message: CharSequence,

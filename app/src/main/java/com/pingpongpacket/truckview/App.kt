@@ -5,16 +5,18 @@ import com.pingpongpacket.truckview.dagger.AppComponent
 import com.pingpongpacket.truckview.dagger.AppModule
 import com.pingpongpacket.truckview.dagger.DaggerAppComponent
 
-
 class App: Application() {
-    companion object{
-        lateinit var appComponent: AppComponent
+    val component: AppComponent by lazy {
+        DaggerAppComponent
+                .builder()
+                .appModule(AppModule(this))
+                .build()
     }
 
     override fun onCreate() {
         super.onCreate()
-        appComponent =  DaggerAppComponent.builder()
-                .appModule(AppModule(this))
-                .build()
+        component.inject(this)
     }
+
+
 }

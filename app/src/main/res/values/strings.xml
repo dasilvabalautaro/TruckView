@@ -14,4 +14,7 @@
     <string name="lbl_logo_description">Logo</string>
     <string name="lbl_forgot_password">Forgot Password?</string>
     <string name="error_input">Incorrect data. Please verify.</string>
+    <string name="lbl_date">Date:</string>
+    <string name="lbl_product">Product:</string>
+    <string name="lbl_weight">Net Weight:</string>
 </resources>

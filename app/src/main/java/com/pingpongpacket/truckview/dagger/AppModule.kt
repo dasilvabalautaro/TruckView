@@ -1,27 +1,13 @@
 package com.pingpongpacket.truckview.dagger
 
-import android.content.Context
-import com.pingpongpacket.truckview.models.UserRegisterFirebase
-import com.pingpongpacket.truckview.tools.InputCheck
-import com.pingpongpacket.truckview.tools.Preferences
+import android.app.Application
 import dagger.Module
 import dagger.Provides
+import javax.inject.Singleton
 
 @Module
-class AppModule(val context: Context) {
-
+class AppModule(val app: Application) {
     @Provides
-    fun provideInputCheck(): InputCheck {
-        return InputCheck(context)
-    }
-
-    @Provides
-    fun providePreferences(): Preferences {
-        return Preferences(context)
-    }
-
-    @Provides
-    fun provideUserRegister(): UserRegisterFirebase {
-        return UserRegisterFirebase(context)
-    }
+    @Singleton
+    fun provideApplication(): Application = this.app
 }

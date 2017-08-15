@@ -20,4 +20,5 @@
     <dimen name="unfolded_size">26sp</dimen>
     <dimen name="text_padding">16dp</dimen>
     <dimen name="input_width">300dp</dimen>
+    <dimen name="weighing_horizontal_margin">16dp</dimen>
 </resources>
