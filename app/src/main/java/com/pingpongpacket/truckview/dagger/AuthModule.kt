@@ -2,6 +2,7 @@ package com.pingpongpacket.truckview.dagger
 
 import android.content.Context
 import com.pingpongpacket.truckview.models.UserRegisterFirebase
+import com.pingpongpacket.truckview.tools.ConnectionNetwork
 import com.pingpongpacket.truckview.tools.InputCheck
 import com.pingpongpacket.truckview.tools.Preferences
 import dagger.Module
@@ -22,6 +23,11 @@ class AuthModule(val context: Context) {
     @Provides
     fun provideUserRegister(): UserRegisterFirebase {
         return UserRegisterFirebase(context)
+    }
+
+    @Provides
+    fun provideConnectionNetwork(): ConnectionNetwork{
+        return ConnectionNetwork(context)
     }
 
 }

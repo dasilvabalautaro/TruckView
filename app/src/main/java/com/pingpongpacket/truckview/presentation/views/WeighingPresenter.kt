@@ -1,16 +1,44 @@
 package com.pingpongpacket.truckview.presentation.views
 
+import android.os.Handler
+import com.pingpongpacket.truckview.App
+import com.pingpongpacket.truckview.dagger.WithoutBuilderModule
+import com.pingpongpacket.truckview.domain.RequestWeighing
 import com.pingpongpacket.truckview.domain.WeighingContract
 import com.pingpongpacket.truckview.models.Weighing
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
 class WeighingPresenter @Inject constructor(val navigator:
                                             WeighingContract.Navigator):
         WeighingContract.Presenter {
 
-    private var view: WeighingContract.View? = null
+    @Inject
+    lateinit var requestWeighing: RequestWeighing
 
+    val app
+        get() = App()
+
+    val component by lazy { app.component.plus(WithoutBuilderModule()) }
+    private var view: WeighingContract.View? = null
+    private var disposable: CompositeDisposable = CompositeDisposable()
     private var listWeighing: ArrayList<Weighing>? = null
+
+    init {
+        component.inject(this)
+        val list = this.requestWeighing.observableList.map { s -> s }
+        disposable.add(list.observeOn(AndroidSchedulers.mainThread())
+                .subscribe { s ->
+                    kotlin.run {
+                        listWeighing = s
+                        if (view != null){
+                            view!!.showWeighingList(listWeighing!!)
+                        }
+                    }
+                })
+    }
+
 
     override fun attachView(view: WeighingContract.View) {
         this.view = view
@@ -21,17 +49,8 @@ class WeighingPresenter @Inject constructor(val navigator:
     }
 
     override fun getWeighing() {
-        listWeighing = ArrayList()
-        for (i in 0..3){
-            val weigh: Weighing = Weighing("123",
-                    "12092017", "la cruz", "123ser",
-                    "loco veloz", "345678", "1rd", "jorge rocha",
-                    1245, "gloria", "leche", "aceros")
-            listWeighing!!.add(weigh)
-        }
-        if (view != null){
-            view!!.showWeighingList(listWeighing!!)
-        }
+        requestWeighing.downloadWeighing()
+
     }
 
     override fun clickWeighing(weighing: Weighing) {
@@ -39,6 +58,11 @@ class WeighingPresenter @Inject constructor(val navigator:
     }
 
     override fun loadUpdateWeighing() {
-
+        Handler().postDelayed({
+            if (this.view != null){
+                this.view!!.hideLoading()
+                requestWeighing.downloadWeighing()
+            }
+        }, 2000)
     }
 }

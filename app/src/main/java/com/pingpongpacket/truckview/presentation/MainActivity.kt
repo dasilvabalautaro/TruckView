@@ -30,9 +30,6 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         if (savedInstanceState == null){
             mainPresenter.clickWeighing()
         }
-
-//        findViewById(R.id.btnInit).setOnClickListener(onClickListener)
-
     }
 
     override fun onStart() {
@@ -45,23 +42,20 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
     }
 
-//    internal val onClickListener = View.OnClickListener {
-//        navigate<LoginActivity>()
-//    }
-
-
     inline fun <reified T : Activity> Activity.navigate() {
         val intent = Intent(this, T::class.java)
         startActivity(intent)
     }
 
     override fun highlightWeighing() {
-
+//        mainPresenter.clickWeighing()
     }
 
     override fun onBackPressed() {
+
         if (!mainNavigator.onBackPressed()){
             super.onBackPressed()
+
         }
 
     }

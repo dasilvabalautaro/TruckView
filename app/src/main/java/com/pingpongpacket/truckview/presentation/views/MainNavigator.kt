@@ -53,12 +53,28 @@ class MainNavigator @Inject constructor(val mainActivity: Activity):
                 .commitNow()
     }
     override fun goToWeighingDetails(weighing: Weighing) {
+        val weighingDetail: WeighingDetailFragment =
+                WeighingDetailFragment.newInstance(weighing)
+        (mainActivity as MainActivity)
+                .supportFragmentManager
+                .beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                .replace(R.id.fl_content, weighingDetail, TAG_DETAILS)
+                .addToBackStack(null)
+                .commit()
 
     }
 
     override fun onBackPressed(): Boolean {
-        clearMaster()
-        return false
+        if ((mainActivity as MainActivity).supportFragmentManager
+                .backStackEntryCount > 0){
+            (mainActivity as MainActivity).supportFragmentManager
+                    .popBackStackImmediate()
+            return true
+        }else{
+            return false
+        }
+
     }
 
 }

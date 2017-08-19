@@ -3,10 +3,7 @@ package com.pingpongpacket.truckview.models
 import android.content.Context
 import com.google.android.gms.tasks.Task
 import com.google.firebase.FirebaseApp
-import com.google.firebase.auth.AuthResult
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.firebase.auth.*
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
@@ -14,6 +11,7 @@ import io.reactivex.subjects.Subject
 
 
 class UserRegisterFirebase(context: Context): UserRegisterInterface  {
+
     private var auth: FirebaseAuth? = null
     private var authListener: FirebaseAuth.AuthStateListener? = null
     var currentUser: FirebaseUser? = null
@@ -94,6 +92,20 @@ class UserRegisterFirebase(context: Context): UserRegisterInterface  {
         if (authListener != null){
             auth!!.removeAuthStateListener(authListener!!)
         }
+    }
+    override fun signInWithCredential(authCredential: AuthCredential) {
+        auth!!.signInWithCredential(authCredential)
+                .addOnCompleteListener({
+                    task: Task<AuthResult> ->
+                    if (task.isSuccessful){
+                        currentUser = auth!!.currentUser
+                        this.messageResult = USER_REGISTER
+                        this.nameUser = currentUser!!.displayName!!
+                    }else{
+                        this.messageResult = USER_NOT_REGISTER
+                    }
+                    this.observableMessage.onNext(this.messageResult!!)
+                })
     }
 
     private fun initAuthListener(){

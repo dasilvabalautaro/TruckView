@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Context
 import com.pingpongpacket.truckview.domain.MainContract
 import com.pingpongpacket.truckview.domain.WeighingContract
-import com.pingpongpacket.truckview.presentation.MainActivity
 import com.pingpongpacket.truckview.presentation.views.MainNavigator
 import com.pingpongpacket.truckview.presentation.views.MainPresenter
 import com.pingpongpacket.truckview.presentation.views.WeighingNavigator
@@ -38,11 +37,6 @@ class MainModule(val mainActivity: Activity) {
             MainContract.Presenter{
         return MainPresenter(navigator)
     }
-
-//    @Provides
-//    fun provideMainActivity(): MainActivity{
-//        return mainActivity
-//    }
 
     @Provides
     fun provideContext(): Context{

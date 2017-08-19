@@ -1,9 +1,13 @@
 package com.pingpongpacket.truckview.presentation.views
 
 import android.content.Context
+import android.graphics.drawable.Drawable
+import android.os.Build
 import android.os.Bundle
+import android.support.annotation.RequiresApi
 import android.support.v4.app.Fragment
 import android.support.v4.widget.SwipeRefreshLayout
+import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -78,13 +82,29 @@ class WeighingFragment: Fragment(), WeighingContract.View {
         presenter.getWeighing()
     }
 
+
     private fun setupRecyclerView(){
         rvWeighing!!.setHasFixedSize(true)
         rvWeighing!!.layoutManager = LinearLayoutManager(this.context)
-        adapter = WeighingAdapter(){
-            presenter.clickWeighing(it)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            addDecorationRecycler()
         }
+        adapter = WeighingAdapter(){
+            if (!srLayout!!.isRefreshing) {
+                presenter.clickWeighing(it)
+            }
+        }
+
         rvWeighing!!.adapter = adapter
+    }
+
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    private fun addDecorationRecycler(){
+        val horizontalDecoration: DividerItemDecoration =
+                DividerItemDecoration(rvWeighing!!.context, DividerItemDecoration.VERTICAL)
+        val horizontalDivider: Drawable = context.getDrawable(R.drawable.horizontal_divider)
+        horizontalDecoration.setDrawable(horizontalDivider)
+        rvWeighing!!.addItemDecoration(horizontalDecoration)
     }
 
     private fun setupSwipeRefresh() = srLayout!!.setOnRefreshListener(

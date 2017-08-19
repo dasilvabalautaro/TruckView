@@ -1,7 +1,9 @@
 package com.pingpongpacket.truckview.presentation.views
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.LayoutRes
 import android.support.v4.app.Fragment
@@ -19,6 +21,8 @@ import com.pingpongpacket.truckview.App
 import com.pingpongpacket.truckview.R
 import com.pingpongpacket.truckview.dagger.AuthModule
 import com.pingpongpacket.truckview.models.UserRegisterFirebase
+import com.pingpongpacket.truckview.presentation.LoginActivity
+import com.pingpongpacket.truckview.presentation.MainActivity
 import com.pingpongpacket.truckview.tools.InputCheck
 import com.pingpongpacket.truckview.tools.Preferences
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -35,8 +39,8 @@ abstract class AuthFragment: Fragment() {
     val Fragment.app: App
         get() = activity.application as App
 
-    val component by lazy { app.component.plus(AuthModule(context)) }
-
+    private val component by lazy { app
+            .component.plus(AuthModule(context)) }
 
     interface Callback{
         fun remove(fragment: AuthFragment)
@@ -74,6 +78,18 @@ abstract class AuthFragment: Fragment() {
         }
     }
 
+    @OnClick(R.id.ib_google)
+    fun signIn(){
+        val loginActivity =  activity as LoginActivity
+        loginActivity.signIn(userRegisterFirebase)
+    }
+
+    @OnClick(R.id.ib_facebook)
+    fun signInFacebook(){
+        val loginActivity =  activity as LoginActivity
+        loginActivity.signInFacebook(userRegisterFirebase)
+    }
+
     @SuppressLint("SupportAnnotationUsage")
     @LayoutRes
     abstract fun fireAnimation()
@@ -106,7 +122,13 @@ abstract class AuthFragment: Fragment() {
                     s
                 }
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { s -> context.toast(s) })
+                .subscribe { s ->
+                    context.toast(s)
+                    if (s == USER_REGISTER){
+                        activity.navigate<MainActivity>()
+                        activity.finish()
+                    }
+                })
     }
 
     fun mergeColoredText(leftPart: String,
@@ -140,5 +162,10 @@ abstract class AuthFragment: Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         disposable.clear()
+    }
+
+    inline fun <reified T : Activity> Activity.navigate() {
+        val intent = Intent(activity, T::class.java)
+        startActivity(intent)
     }
 }

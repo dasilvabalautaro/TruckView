@@ -16,5 +16,22 @@
     <string name="error_input">Incorrect data. Please verify.</string>
     <string name="lbl_date">Date:</string>
     <string name="lbl_product">Product:</string>
-    <string name="lbl_weight">Net Weight:</string>
+    <string name="lbl_weight">Net Weight Kg.:</string>
+    <string name="lbl_operator_name">Operator Name</string>
+    <string name="lbl_check_point">Check Point</string>
+    <string name="lbl_driver">Driver</string>
+    <string name="lbl_license">License</string>
+    <string name="lbl_vehicle">Vehicle</string>
+    <string name="lbl_plate">Plate</string>
+    <string name="lbl_provider">Provider</string>
+    <string name="lbl_client">Client</string>
+    <string name="lbl_weighing_detail">Weighing Detail</string>
+    <string name="menu_share">Share</string>
+    <string name="lbl_description_list">The latest weight control records completed by date order. For more detail click on the register.</string>
+    <string name="lbl_weighing_list">Weighing List</string>
+    <string name="lbl_not_found_network">No network connection</string>
+    <string name="lbl_mesage_not_network">The application needs access to the cloud to verify the weighing data.</string>
+    <string name="facebook_app_id">1809615622684348</string>
+    <string name="fb_login_protocol_scheme">fb1809615622684348</string>
+
 </resources>

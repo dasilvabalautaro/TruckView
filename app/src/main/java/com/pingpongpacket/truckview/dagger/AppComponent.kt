@@ -10,4 +10,6 @@ interface AppComponent {
     fun inject(app: App)
     fun plus(mainModule: MainModule): MainComponent
     fun plus(authModule: AuthModule): AuthComponent
+    fun plus(withoutBuilderModule: WithoutBuilderModule): WithoutBuilderComponent
+
 }
