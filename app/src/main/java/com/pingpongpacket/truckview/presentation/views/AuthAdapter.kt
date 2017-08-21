@@ -20,10 +20,10 @@ class AuthAdapter(manager: FragmentManager,
 
     override fun remove(fragment: AuthFragment) {
         if (logIn == fragment){
-            pager!!.setCurrentItem(1, true)
+            pager!!.setCurrentItem(0, true)
             signUp!!.fireAnimation()
         }else{
-            pager!!.setCurrentItem(0, true)
+            pager!!.setCurrentItem(1, true)
             logIn!!.fireAnimation()
         }
     }
@@ -32,19 +32,25 @@ class AuthAdapter(manager: FragmentManager,
         when(position){
             0 ->{
 
-                if (logIn == null) logIn = LogInFragment()
-                logIn!!.callback = this
-                return logIn!!
+                if (signUp == null) signUp = SignUpFragment()
+                signUp!!.callback = this
+                return signUp!!
+
+//                if (logIn == null) logIn = LogInFragment()
+//                logIn!!.callback = this
+//                return logIn!!
 
             }
             else ->{
+                if (logIn == null) logIn = LogInFragment()
+                logIn!!.callback = this
 
-                if (signUp == null) signUp = SignUpFragment()
-                signUp!!.callback = this
+//                if (signUp == null) signUp = SignUpFragment()
+//                signUp!!.callback = this
 
             }
         }
-        return signUp!!
+        return logIn!!
     }
 
     override fun getCount(): Int {

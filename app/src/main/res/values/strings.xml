@@ -6,7 +6,7 @@
     <string name="sign_up_or_label"> Sign Up </string>
     <string name="log_in_or_label"> Log In </string>
 
-    <string name="password_hint">Password</string>
+    <string name="password_hint">Password > 6 characters</string>
     <string name="email_hint">Email</string>
     <string name="user_name_hint">User Name</string>
 

@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">TruckView</string>
+    <string name="sign_up_label">Regístro</string>
+    <string name="log_in_label">Inicio</string>
+
+    <string name="sign_up_or_label"> Regístro </string>
+    <string name="log_in_or_label"> Inicio </string>
+
+    <string name="password_hint">Contraseña > 6 caracteres</string>
+    <string name="email_hint">Correo Eléctronico</string>
+    <string name="user_name_hint">Nombre de Usuario</string>
+
+    <string name="or"> O </string>
+    <string name="lbl_logo_description">Logo</string>
+    <string name="lbl_forgot_password">Olvido Contraseña?</string>
+    <string name="error_input">Datos Incorrectos. Por favor verifique.</string>
+    <string name="lbl_date">Fecha:</string>
+    <string name="lbl_product">Producto:</string>
+    <string name="lbl_weight">Peso Neto Kg.:</string>
+    <string name="lbl_operator_name">Nombre Operador</string>
+    <string name="lbl_check_point">Puesto de Control</string>
+    <string name="lbl_driver">Conductor</string>
+    <string name="lbl_license">Licencia</string>
+    <string name="lbl_vehicle">Vehículo</string>
+    <string name="lbl_plate">Placa</string>
+    <string name="lbl_provider">Proveedor</string>
+    <string name="lbl_client">Cliente</string>
+    <string name="lbl_weighing_detail">Detalle Pesaje</string>
+    <string name="menu_share">Share</string>
+    <string name="lbl_description_list">Los últimos registros de control de peso completados por orden de fecha. Para más detalles haga clic en el registro.</string>
+    <string name="lbl_weighing_list">Lista de Pesajes</string>
+    <string name="lbl_not_found_network">No existe conección.</string>
+    <string name="lbl_mesage_not_network">La aplicación necesita acceso a la nube para verificar los datos de pesaje.</string>
+    <string name="facebook_app_id">1809615622684348</string>
+    <string name="fb_login_protocol_scheme">fb1809615622684348</string>
+
+</resources>

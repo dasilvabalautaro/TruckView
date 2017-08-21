@@ -24,6 +24,8 @@ class WeighingPresenter @Inject constructor(val navigator:
     private var view: WeighingContract.View? = null
     private var disposable: CompositeDisposable = CompositeDisposable()
     private var listWeighing: ArrayList<Weighing>? = null
+    private val CHECK_CACHE = 0
+    private val NOT_CACHE = 1
 
     init {
         component.inject(this)
@@ -49,10 +51,9 @@ class WeighingPresenter @Inject constructor(val navigator:
     }
 
     override fun getWeighing() {
-        requestWeighing.downloadWeighing()
+        requestWeighing.downloadWeighing(CHECK_CACHE)
 
     }
-
     override fun clickWeighing(weighing: Weighing) {
         navigator.goToWeighingDetails(weighing)
     }
@@ -61,7 +62,7 @@ class WeighingPresenter @Inject constructor(val navigator:
         Handler().postDelayed({
             if (this.view != null){
                 this.view!!.hideLoading()
-                requestWeighing.downloadWeighing()
+                requestWeighing.downloadWeighing(NOT_CACHE)
             }
         }, 2000)
     }

@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "1079071051376",
+    "firebase_url": "https://truckview-a2f66.firebaseio.com",
+    "project_id": "truckview-a2f66",
+    "storage_bucket": "truckview-a2f66.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1079071051376:android:d6b0c97e6d9ec40a",
+        "android_client_info": {
+          "package_name": "com.pingpongpacket.truckview"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1079071051376-6r8drfhkbs60cl82joddif0msm0n34i9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pingpongpacket.truckview",
+            "certificate_hash": "97aa23d6474f6c5184613b5fc9e0642081d95a96"
+          }
+        },
+        {
+          "client_id": "1079071051376-jhdseedkpkg9hdnngc36gkoltb46cium.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pingpongpacket.truckview",
+            "certificate_hash": "14d50156a4dd1b9d06598306dd1ef828146969bd"
+          }
+        },
+        {
+          "client_id": "1079071051376-cba1t3m3ruq5d32iujeua5ao2311j8p6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCBxpw0SOILfRhg9pGi8sOx2ERWd0CN09A"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1079071051376-cba1t3m3ruq5d32iujeua5ao2311j8p6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

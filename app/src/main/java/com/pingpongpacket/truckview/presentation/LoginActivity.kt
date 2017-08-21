@@ -1,9 +1,11 @@
 package com.pingpongpacket.truckview.presentation
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
+import android.widget.Toast
 import butterknife.ButterKnife
 import com.facebook.*
 import com.facebook.login.LoginResult
@@ -24,8 +26,8 @@ import com.pingpongpacket.truckview.presentation.views.AuthAdapter
 class LoginActivity: AppCompatActivity(),
         GoogleApiClient.OnConnectionFailedListener {
 
-    private val RC_SIGN_IN = 30
-
+    private val RC_SIGN_IN = 9001
+    private val UPDATE_GOOGLE_PLAY = "Please update Google Play Services.\n Use another option. Thanks very much."
     private var userRegisterFirebaseActivity: UserRegisterFirebase? = null
     private var googleSignInOptions: GoogleSignInOptions? = null
     private var googleApiClient: GoogleApiClient? = null
@@ -54,7 +56,8 @@ class LoginActivity: AppCompatActivity(),
                         googleSignInResult.signInAccount!!
                 firebaseAuthWithGoogle(googleSignInAccount)
             }else{
-
+                toast(UPDATE_GOOGLE_PLAY)
+                println(googleSignInResult.status.statusCode.toString())
             }
         }else{
             callbackManager!!.onActivityResult(requestCode, resultCode, data)
@@ -77,17 +80,23 @@ class LoginActivity: AppCompatActivity(),
     }
 
     fun signInFacebook(userRegisterFirebase: UserRegisterFirebase){
-        this.userRegisterFirebaseActivity = userRegisterFirebase
-//        loginFacebook!!.callOnClick()
+        if (this.userRegisterFirebaseActivity == null){
+            this.userRegisterFirebaseActivity = userRegisterFirebase
+        }
+
         loginFacebook!!.performClick()
     }
     fun signIn(userRegisterFirebase: UserRegisterFirebase) {
-        this.userRegisterFirebaseActivity = userRegisterFirebase
-        configGoogle()
+        if (this.userRegisterFirebaseActivity == null){
+            configGoogle()
+            this.userRegisterFirebaseActivity = userRegisterFirebase
+            toast("Init Register")
+        }
+
         val signInIntent: Intent = Auth.GoogleSignInApi
                 .getSignInIntent(googleApiClient)
         startActivityForResult(signInIntent, RC_SIGN_IN)
-
+        googleApiClient!!.connect()
     }
 
     private fun firebaseAuthWithGoogle(googleSignInAccount:
@@ -107,7 +116,7 @@ class LoginActivity: AppCompatActivity(),
 
     override fun onConnectionFailed(p0: ConnectionResult) {
         if (p0.errorMessage != null){
-
+            toast(p0.errorMessage!!)
         }
     }
 
@@ -118,13 +127,23 @@ class LoginActivity: AppCompatActivity(),
             }
 
             override fun onCancel() {
+                userRegisterFirebaseActivity!!.finish()
             }
 
             override fun onError(error: FacebookException) {
+                if (error.message != null){
+                    toast(error.message!!)
+                }
 
             }
         }
 
         loginFacebook!!.registerCallback(callbackManager, facebookCallback)
+    }
+
+    fun Activity.toast(message: CharSequence,
+                      duration: Int = Toast.LENGTH_SHORT) {
+        Toast.makeText(this, message, duration).show()
+
     }
 }

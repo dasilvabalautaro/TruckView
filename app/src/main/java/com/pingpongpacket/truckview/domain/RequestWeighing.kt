@@ -6,6 +6,7 @@ import com.pingpongpacket.truckview.models.Weighing
 import com.pingpongpacket.truckview.models.interfaces.IServiceExchangePost
 import com.pingpongpacket.truckview.models.network.MessageOfService
 import com.pingpongpacket.truckview.models.network.ServiceRemotePost
+import com.pingpongpacket.truckview.models.persistent.CachingLru
 import com.pingpongpacket.truckview.tools.Constants
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -23,6 +24,7 @@ import javax.inject.Inject
 class RequestWeighing @Inject constructor(
         val serviceRemotePost: ServiceRemotePost) {
     private val TAG = RequestWeighing::class.java.name!!
+    private val KEY_LIST = "listWeighing"
     private var disposable: CompositeDisposable = CompositeDisposable()
     private var servicePost: IServiceExchangePost? = null
     private var listWeighing: ArrayList<Weighing>? = null
@@ -46,7 +48,16 @@ class RequestWeighing @Inject constructor(
         return false
     }
 
-    fun downloadWeighing(){
+    fun downloadWeighing(flag: Int){
+        val dataCache = verifyDataCache()
+        if (dataCache != null && flag == 0){
+            getDataCache(dataCache)
+        }else{
+            getDataServer()
+        }
+    }
+
+    private fun getDataServer(){
         if (setParams() && setServicePost()){
             try {
                 disposable.add(servicePost!!.sendPost(agentCarrier!!.license,
@@ -65,7 +76,18 @@ class RequestWeighing @Inject constructor(
 
         }
     }
+    private fun getDataCache(stringJson: String){
+        val jsonArray: JSONArray =  JSONArray(stringJson)
+        getListWeighing(jsonArray)
+    }
+    private fun verifyDataCache(): String?{
 
+        val dataCache = CachingLru.instance.getLru().get(KEY_LIST)
+        if (dataCache != null){
+            return dataCache as String
+        }
+        return dataCache
+    }
 
     private fun getJsonArray(messageOfService: MessageOfService){
         if (messageOfService.success){
@@ -74,6 +96,7 @@ class RequestWeighing @Inject constructor(
 
             if (!gsonResult.isEmpty()){
                 val jsonArray: JSONArray =  JSONArray(gsonResult)
+                CachingLru.instance.getLru().put(KEY_LIST, gsonResult)
                 getListWeighing(jsonArray)
             }
 

@@ -28,6 +28,9 @@
         </activity>
         <activity android:name=".presentation.LoginActivity"
             android:configChanges="mcc|mnc|locale|keyboardHidden|screenLayout|screenSize|orientation">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
         </activity>
 
     </application>

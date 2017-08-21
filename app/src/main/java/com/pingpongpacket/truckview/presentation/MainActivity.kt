@@ -10,6 +10,7 @@ import com.pingpongpacket.truckview.dagger.MainModule
 import com.pingpongpacket.truckview.domain.MainContract
 import javax.inject.Inject
 
+
 class MainActivity : AppCompatActivity(), MainContract.View {
 
     val Activity.app: App
@@ -21,6 +22,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     lateinit var mainNavigator: MainContract.Navigator
     @Inject
     lateinit var mainPresenter: MainContract.Presenter
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
